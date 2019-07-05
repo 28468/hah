@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>简要回顾ES6</title>
+</head>
+<body>
+    <script>
+        /** 属性描述符 
+         * writable, configurable, enumerable, value, set, get
+        */
+        var obj = {name: '1612B', num: 30, class: '34401', month: 'july'};
+        // 修改writable, 设置属性不可修改
+        // Object.defineProperty(obj, 'num', {
+        //     writable: false
+        // })
+
+        // 修改configurable, 设置属性不可以被删除
+        // Object.defineProperty(obj, 'num', {
+        //     configurable: false
+        // })
+
+        // 修改enumerable, 设置属性不可以被删除
+        // Object.defineProperty(obj, 'num', {
+        //     enumerable: false
+        // })
+        // for (let key in obj){
+        //     console.log('key...', key, ', val...', obj[key])
+        // }
+
+        // 修改value属性, 相当于赋值
+        // Object.defineProperty(obj, 'num', {
+        //     value: ()=>{}
+        // })
+    
+        // 劫持属性的get方法
+        // Object.defineProperty(obj, 'num', {
+        //     get(){
+        //         return 10000;
+        //     }
+        // })
+
+        // 劫持属性的set方法
+        // Object.defineProperty(obj, 'num', {
+        //     set(val){
+        //         console.log('val...', val)
+        //     }
+        // })
+
+
+        /**
+            Promise
+            三种状态：pennding(刚创建时), fulfilled(调用resolve), rejected(调用reject), 状态不可逆
+            创建方式：new Promise, Promise.resolve, Promise.reject
+            静态方法：Promise.all, Promise.race
+            错误处理
+        */
+        var p = function(ms){
+            return new Promise((resolve, reject)=>{
+                setTimeout(()=>{
+                    // resolve(ms);
+                    reject(new Error('我是一个错误'));
+                }, ms)
+            })
+        }
+        p(3000).then(res=>{
+            console.log('res...', res);
+        }, err=>{
+            console.log('err...', err);
+            // return 100;
+            return Promise.reject(100);
+        }).then(res=>{
+            console.log('res2...', res)
+        }).then(res=>{
+            console.log('res3...', res)
+        }).then(res=>{
+            console.log('res4...', res)
+        }).then(res=>{
+            console.log('res5...', res)
+        }).catch(err=>{
+            console.log('catch...', err);
+        }).finally(res=>{
+            console.log('res...', res);
+        })
+
+        /** async/await 
+         * aysnc是异步函数，表示函数内部有异步操作，所有异步操作都会阻塞执行
+         * await表达式的返回值就是调用resolve传递的数据
+         * async错误处理，使用try...catch包裹
+        **/
+        async function pAysnc(){
+            try{
+                let data = await p(4000);
+                console.log('data...', data);
+            }catch(err){
+                console.log('err...', err);
+            }
+        }
+
+        pAysnc();
+
+        /**
+        1. 完成十张图片的并行加载
+        2. 完成十张图片的串行加载
+        3. 了解event loop， 同步/异步，宏任务/微任务
+        **/
+
+        console.log(1);
+
+        setTimeout(() => {
+        console.log(2);
+        Promise.resolve().then(() => {
+            console.log(3)
+        });
+        });
+
+        new Promise((resolve, reject) => {
+        console.log(4)
+        resolve(5)
+        }).then((data) => {
+        console.log(data);
+        
+        Promise.resolve().then(() => {
+            console.log(6)
+        }).then(() => {
+            console.log(7)
+            
+            setTimeout(() => {
+            console.log(8)
+            }, 0);
+        });
+        })
+
+        setTimeout(() => {
+        console.log(9);
+        })
+
+        console.log(10);
+    </script>
+</body>
+</html>
