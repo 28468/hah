@@ -12,22 +12,50 @@ function LoginPage(props) {
     props.login({user_name: 'chenmanjie', user_pwd: 'Chenmanjie123!'});
   }, [])
 
+  // 处理表单提交
+  let handleSubmit = ()=>{
+    props.form.validateFields((err, values) => {
+      if (!err) {
+        props.login({user_name: values.username, user_pwd: values.password});
+        console.log('Received values of form: ', values);
+      }
+    });
+  }
+
+  // 从Form高阶组件中拿到校验组件
+  const { getFieldDecorator } = props.form;
+
   return (
-    <Form className="login-form">
+    <Form className="login-form" onSubmit={handleSubmit}>
       <p className={styles.title}>登陆页面</p>
-      <p className="title" id="title">登陆页面2</p>
       <Form.Item>
+        {getFieldDecorator('username', {
+          validateTrigger: 'onBlur',
+          rules: [
+            { required: true, message: 'Please input your username!' },
+            { min: 6, max: 15, message: 'Please input your correct username!' }
+          ],
+        })(
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="Username"
           />,
+        )}
       </Form.Item>
       <Form.Item>
+        {getFieldDecorator('password', {
+          validateTrigger: 'onBlur',
+          rules: [
+            { required: true, message: 'Please input your password!' },
+            { pattern: /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[!#@*&.]).*$/, message: 'Please input your correct password!' }
+          ],
+        })(
           <Input
             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             type="password"
             placeholder="Password"
           />,
+        )}
       </Form.Item>
       <Form.Item>
        <Checkbox>Remember me</Checkbox>
@@ -60,4 +88,4 @@ const mapDispatchToPorps = dispatch=>{
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToPorps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToPorps)(Form.create()(LoginPage));
