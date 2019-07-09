@@ -1,13 +1,20 @@
-import React from 'react';
+import React, {useState, useEffect}  from 'react';
 import { connect } from 'dva';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import styles from './IndexPage.scss';
 
-function LoginPage() {
+function LoginPage(props) {
+  console.log('props...', props);
+
+  // 模拟componentDidMount
+  useEffect(()=>{
+    console.log('执行useEffect');
+    props.login({user_name: 'chenmanjie', user_pwd: 'Chenmanjie123!'});
+  }, [])
+
   return (
     <Form className="login-form">
       <Form.Item>
-
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="Username"
@@ -37,4 +44,18 @@ function LoginPage() {
 LoginPage.propTypes = {
 };
 
-export default connect()(LoginPage);
+const mapStateToProps = state=>{
+  return {...state.login}
+}
+const mapDispatchToPorps = dispatch=>{
+  return {
+    login: payload=>{
+      dispatch({
+        type: 'login/login',
+        payload
+      })
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToPorps)(LoginPage);
