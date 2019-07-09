@@ -14,7 +14,8 @@ export default {
   // 异步操作
   effects: {
     *fetch({ payload }, { call, put }) {  // eslint-disable-line
-      let data = yield xhr();
+      // let data = yield xhr();
+
       yield put({ type: 'save' });
     },
   },

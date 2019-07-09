@@ -14,6 +14,8 @@ function LoginPage(props) {
 
   return (
     <Form className="login-form">
+      <p className={styles.title}>登陆页面</p>
+      <p className="title" id="title">登陆页面2</p>
       <Form.Item>
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
