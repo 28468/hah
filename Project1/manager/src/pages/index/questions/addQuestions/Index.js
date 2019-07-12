@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { Table, Button, Modal, Form, Input, message } from 'antd';
+import { Table, Button, Modal, Form, Input, message, Spin } from 'antd';
 import {connect} from 'dva';
+import styles from './Index.scss'
 
 function AddQuestions(props){
   // 设置表头
@@ -71,13 +72,15 @@ function AddQuestions(props){
         </Form.Item>
       </Form>
     </Modal>
+    {props.global?<div className={styles.loading}><Spin/></div>: null}
   </div>
 }
 
 const mapStateToProps = state=>{
   console.log('state...', state);
   return {
-    questionsType: state.questions.questionsType
+    questionsType: state.questions.questionsType,
+    global: state.loading.global
   }
 }
 
