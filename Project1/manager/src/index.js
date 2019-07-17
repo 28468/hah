@@ -21,6 +21,8 @@ app.use({
 // 3. Model
 app.model(require('./models/login').default);
 app.model(require('./models/questions').default);
+app.model(require('./models/global').default);
+
 
 // 4. Router
 app.router(require('./router').default);

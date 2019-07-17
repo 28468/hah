@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { Table, Button, Modal, Form, Input, message, Spin } from 'antd';
 import {connect} from 'dva';
 import styles from './Index.scss'
+import {injectIntl} from 'react-intl';
+
 
 function AddQuestions(props){
   // 设置表头
@@ -48,7 +50,7 @@ function AddQuestions(props){
 
   const {getFieldDecorator} = props.form;
   return <div>
-    <h1>试题分类</h1>
+    <h1>{props.intl.formatMessage({id:'questions.type.title'})}</h1>
     <div>
       <Button onClick={()=>updateModal(true)}>+ 添加类型</Button>
       <Table columns={columns} dataSource={props.questionsType} rowKey="questions_type_id"></Table>
@@ -101,4 +103,4 @@ const mapDispatchToProps = dispatch=>{
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(AddQuestions));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Form.create()(AddQuestions)));
